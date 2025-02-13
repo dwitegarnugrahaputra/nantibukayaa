@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Sacramento&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #FFC0CB, #FF91A4);
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        [data-page] {
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        [data-page].active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #heartsBg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.heart {
+    position: absolute;
+    bottom: -10px;
+    width: 20px;
+    height: 20px;
+    background-color: pink;
+    clip-path: polygon(50% 0%, 100% 35%, 80% 100%, 50% 80%, 20% 100%, 0% 35%);
+    animation: float 5s linear infinite;
+    opacity: 0.7;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: translateY(-100vh) scale(1.2);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(-200vh) scale(1.5);
+        opacity: 0;
+    }
+}
+
+        [data-page="i_have_something"] .container {
+    max-width: 800px;
+    width: 100%;
+    margin-top: 50px;
+    text-align: center;
+    background: transparent; /* Override background asli */
+    box-shadow: none; /* Hilangkan shadow asli */
+}
+
+[data-page="i_have_something"] .letter {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin-top: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    transform: rotate(-2deg);
+}
+
+[data-page="i_have_something"] h2 {
+    font-size: 2em;
+    color: #FF69B4;
+    margin-bottom: 40px;
+    font-family: 'Sacramento', cursive;
+}
+
+[data-page="i_have_something"] #typing {
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: #FF69B4;
+    text-align: left;
+    margin-top: 20px;
+}
+
+[data-page="i_have_something"] .envelope {
+    position: relative;
+}
+
+[data-page="i_have_something"] .envelope::before {
+    content: "Amplop";
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2em;
+    color: #FF1493;
+    background: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+}
+
+        .container {
+            background: rgba(255, 204, 213, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 500px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        h1, h2 {
+            font-family: 'Sacramento', cursive;
+            font-size: 2.5em;
+            color: #ff4081;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        select, button {
+            margin-top: 15px;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        select {
+            width: 100%;
+            background: #fff;
+            border: 2px solid #ff91a4;
+        }
+
+        .places {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .place {
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .place:hover {
+            transform: translateY(-5px);
+        }
+
+        .place img {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .place img.selected {
+            border-color: #ff4081;
+            transform: scale(1.05);
+        }
+
+        .place p {
+            margin-top: 8px;
+            color: #ff4081;
+            font-weight: 500;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #d63384;
+            font-size: 1.1em;
+        }
+
+        .send-button {
+            background-color: #ff6699;
+            color: white;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 20px;
+            padding: 15px;
+        }
+
+        .send-button:hover {
+            background-color: #ff3366;
+            transform: scale(1.02);
+        }
+
+        .input-display {
+            width: 100%;
+            padding: 15px;
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+            border: 2px solid #ff6699;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.9);
+        }
+
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .num-button {
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            background-color: #ff6699;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .num-button:hover {
+            background-color: #ff3366;
+            transform: scale(1.1);
+        }
+
+        .clear-button {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .clear-button:hover {
+            background-color: #d32f2f;
+        }
+
+        .submit-button {
+            background-color: #4CAF50;
+            color: white;
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover:not(:disabled) {
+            background-color: #45a049;
+            transform: scale(1.02);
+        }
+
+        .submit-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .hint {
+            color: #ff4081;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .image-container img {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.05);
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 15px 40px;
+            border-radius: 30px;
+            border: 2px solid rgb(255, 146, 146);
+            background: rgba(255, 255, 255, 0.95);
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .counter {
+            font-size: 32px;
+            font-weight: 600;
+            color: white;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .poem {
+            font-style: italic;
+            color: white;
+            font-size: 18px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            margin: 20px 0;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background: white;
+            color: #FF4D6D;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .buttons button:hover {
+            transform: scale(1.05);
+            background: #FF4D6D;
+            color: white;
+        }
+
+        .envelope {
+            width: 100%;
+            max-width: 550px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope:hover {
+            transform: scale(1.02);
+        }
+
+        .letter {
+            width: 300px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            overflow: hidden;
+            text-align: left;
+            display: none;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { 
+                transform: translateY(-20px); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0); 
+                opacity: 1; 
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1, h2 {
+                font-size: 2em;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .buttons button {
+                width: 100%;
+            }
+
+            .image-container img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Page -->
+    <div data-page="password" class="active">
+        <div class="container">
+            <h2>Masukkan Password setelah waktunya habis</h2>
+            <img src="https://i.pinimg.com/474x/62/fd/10/62fd10e2736b141d2013babe08d45bff.jpg" alt="Gambar Dekoratif" style="width: 200px; margin-bottom: 15px;">
+            <p id="countdown"></p>
+            <input type="text" class="input-display" id="passwordDisplay" readonly>
+            <p class="hint" id="hint">Hint: our anniversary</p>
+            <div id="heartsBg"></div>
+            <div class="button-container">
+                <button class="num-button" onclick="addNumber(1)">1</button>
+                <button class="num-button" onclick="addNumber(2)">2</button>
+                <button class="num-button" onclick="addNumber(3)">3</button>
+                <button class="num-button" onclick="addNumber(4)">4</button>
+                <button class="num-button" onclick="addNumber(5)">5</button>
+                <button class="num-button" onclick="addNumber(6)">6</button>
+                <button class="num-button" onclick="addNumber(7)">7</button>
+                <button class="num-button" onclick="addNumber(8)">8</button>
+                <button class="num-button" onclick="addNumber(9)">9</button>
+                <button class="num-button" style="grid-column: 2;" onclick="addNumber(0)">0</button>
+                <button class="clear-button" style="grid-column: 3;" onclick="deleteLastNumber()">⌫</button>
+            </div>
+            <button class="submit-button" id="submitButton" onclick="checkPassword()" disabled>Kirim</button>
+        </div>
+    </div>
+    <!-- Halaman Selanjutnya -->
+    <div data-page="halaman_selanjutnya">
+        <div class="content">
+            <h1>Happy Valentine's dayy Sayaaanggg</h1>
+            <div class="image-container">
+                <img src="foto/21.jpg" alt="Foto 1">
+                <img src="foto/22.jpg" alt="Foto 2">
+                <img src="foto/1.jpg" alt="Foto 3">
+            </div>
+            <button class="button" onclick="navigateToPage('hitung_pacaran')">
+                Mau liat udah seberapa lama kita pacaran ga?
+            </button>
+        </div>
+    </div>
+
+    <!-- Hitung Pacaran Page -->
+    <div data-page="hitung_pacaran">
+        <div class="container">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-bar" placeholder="how long we've been together" disabled>
+            </div>
+            <img src="https://i.pinimg.com/736x/1b/b4/3f/1bb43fccf2473b34e37d3b68451a8097.jpg" alt="Profile Picture" style="width: 250px; margin: 20px 0;">
+            <div class="counter" id="counter">Loading...</div>
+            <p class="poem">"Days may pass, yet still I find, No time could measure love so kind. Moments fade, but hearts still know, With you, my love will only grow."</p>
+            <div class="buttons">
+                <button onclick="navigateToPage('read_me')">Read Me</button>
+                <button onclick="navigateToPage('i_have_something')">I Have Something for You</button>
+                <button onclick="navigateToPage('ayo_jalan')">Date</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Read Me Page -->
+    <div data-page="read_me">
+        <h2>Keluh Kesah Selama Bikin Ini</h2>
+        <div class="container">
+            <div class="letter" id="letter1"></div>
+            <div class="letter" id="letter2"></div>
+            <div class="letter" id="letter3"></div>
+        </div>
+        <div class="button">
+            <button onclick="navigateToPage('hitung_pacaran')">Back</button>
+        </div>
+    </div>
+    <!-- I Have Something Page -->
+    <div data-page="i_have_something">
+        <h2>Surat untuk Mukti ❤️</h2>
+        <div class="container">
+            <img src="./foto/icon_main-removebg-preview.png" alt="Amplop" class="envelope">
+            <div class="letter" style="display: block;">
+                <p id="typing"></p>
+            </div>
+        </div>
+        <div class="button">
+            <button onclick="navigateToPage('hitung_pacaran')">Back</button>
+        </div>
+    </div>
+
+    <!-- Ayo Jalan Page -->
+    <div data-page="ayo_jalan">
+        <div class="container">
+            <h2>Tentuin tanggal berapa</h2>
+            <label for="day">Pilih Hari:</label>
+            <select id="day">
+                <option value="Senin">Senin</option>
+                <option value="Selasa">Selasa</option>
+                <option value="Rabu">Rabu</option>
+                <option value="Kamis">Kamis</option>
+                <option value="Jumat">Jumat</option>
+                <option value="Sabtu">Sabtu</option>
+                <option value="Minggu">Minggu</option>
+            </select>
+            
+            <div class="places">
+                <div class="place" onclick="selectPlace(this, 'Mall')">
+                    <img src="https://upload.wikimedia.org/wikipedia/id/c/cd/RitasupermallTegal.JPG" alt="Mall">
+                    <p>Mall</p>
+                </div>
+                <div class="place" onclick="selectPlace(this, 'Pantai')">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0GEXO8N1q3U6XctWYINw_soxfBshaKCpzDA&s" alt="Pantai">
+                    <p>Pantai</p>
+                </div>
+                <div class="place" onclick="selectPlace(this, 'Cafe')">
+                    <img src="https://guide.horego.com/wp-content/uploads/2024/01/Snapinsta.app_387610496_274885612193417_4159809370514682240_n_1080-300x300.webp" alt="Cafe">
+                    <p>Cafe</p>
+                </div>
+                <div class="place" onclick="selectPlace(this, 'Bioskop')">
+                    <img src="https://infotegal.com/wp-content/uploads/2016/06/Cinemaxx-Tegal.jpg" alt="Bioskop">
+                    <p>Bioskop</p>
+                </div>
+                <div class="place" onclick="selectPlace(this, 'Taman')">
+                    <img src="https://th.bing.com/th/id/OIP.Mp7Lvbh7mQ6winNGbaRYAQHaFj?rs=1&pid=ImgDetMain" alt="Taman">
+                    <p>alun alun</p>
+                </div>
+            </div>
+            
+            <p class="result" id="resultText"></p>
+            <button class="send-button" onclick="sendToWhatsApp()">Kirim ke WhatsApp</button>
+        </div>
+    </div>
+
+    <script>
+    // Global state
+let currentPage = 'password';
+let selectedPlace = '';
+let isTyping = false;
+
+// Navigation System
+function navigateToPage(pageName) {
+    // Hide current page
+    const currentPageElement = document.querySelector(`[data-page="${currentPage}"]`);
+    if (currentPageElement) {
+        currentPageElement.classList.remove('active');
+    }
+    
+    // Show new page
+    const newPageElement = document.querySelector(`[data-page="${pageName}"]`);
+    if (newPageElement) {
+        newPageElement.classList.add('active');
+        currentPage = pageName;
+        
+        // Initialize page-specific content
+        switch (pageName) {
+            case 'read_me':
+                initializeReadMe();
+                break;
+            case 'i_have_something':
+                initializeIHaveSomething();
+                break;
+            case 'hitung_pacaran':
+                updateCounter();
+                break;
+        }
+    }
+}
+function createHearts() {
+    const heartsBg = document.getElementById("heartsBg");
+    if (!heartsBg) return;
+
+    for (let i = 0; i < 30; i++) {
+        let heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+        heartsBg.appendChild(heart);
+    }
+}
+
+// Panggil fungsi setelah DOM dimuat
+document.addEventListener("DOMContentLoaded", function() {
+    createHearts();
+});
+
+
+ // Audio setup
+ let audio;
+        document.addEventListener("DOMContentLoaded", function() {
+            createHearts();
+            audio = new Audio("lagu/blue.mp3");
+            audio.loop = true;
+
+            let savedTime = sessionStorage.getItem("musicTime");
+            if (savedTime) {
+                audio.currentTime = parseFloat(savedTime);
+            }
+
+            document.addEventListener("click", playMusic);
+            document.addEventListener("touchstart", playMusic);
+        });
+
+        function playMusic() {
+            if (audio && audio.paused) {
+                audio.play().catch(error => {
+                    console.warn("Autoplay diblokir, coba klik layar untuk memulai musik.");
+                });
+            }
+        }
+
+        window.addEventListener("beforeunload", function() {
+            if (audio) {
+                sessionStorage.setItem("musicTime", audio.currentTime);
+            }
+        });
+
+// Password Page Functions
+function addNumber(num) {
+    const passwordDisplay = document.getElementById('passwordDisplay');
+    const submitButton = document.getElementById('submitButton');
+    
+    if (passwordDisplay && passwordDisplay.value.length < 4) {
+        passwordDisplay.value += num;
+        
+        // Enable submit button when password length is 4
+        if (passwordDisplay.value.length === 4) {
+            submitButton.disabled = false;
+        }
+    }
+}
+
+function deleteLastNumber() {
+    const passwordDisplay = document.getElementById('passwordDisplay');
+    const submitButton = document.getElementById('submitButton');
+    
+    if (passwordDisplay) {
+        passwordDisplay.value = passwordDisplay.value.slice(0, -1);
+        submitButton.disabled = true;
+    }
+}
+
+function checkPassword() {
+    const passwordDisplay = document.getElementById('passwordDisplay');
+    const hint = document.getElementById('hint');
+    
+    if (passwordDisplay && passwordDisplay.value === '1010') {
+        alert('Password benar! Klik OK untuk melanjutkan.');
+        navigateToPage('halaman_selanjutnya');
+    } else {
+        if (hint) hint.style.display = 'block';
+        if (passwordDisplay) passwordDisplay.value = '';
+    }
+}
+
+// Countdown Timer
+function initializeCountdown() {
+    const submitButton = document.getElementById('submitButton');
+    const countdownElement = document.getElementById('countdown');
+    const targetDate = new Date('2025-02-14T00:00:00').getTime();
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const timeLeft = targetDate - now;
+        
+        if (timeLeft <= 0) {
+            if (countdownElement) {
+                countdownElement.innerHTML = 'Waktu habis! Anda dapat memasukkan password.';
+            }
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
+            return;
+        }
+        
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+        
+        if (countdownElement) {
+            countdownElement.innerHTML = `Waktu tersisa: ${days} hari, ${hours} jam, ${minutes} menit, ${seconds} detik`;
+        }
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+}
+
+// Read Me Page Functions
+const letters = [
+    "Sayaaang maaf yaa di valentine ini aku ga bisa ngasi apa apa selain web jelek ini. waktu kamu bilang bentar lagi hari valentine itu sebenarnya aku disitu langsung bingung mau ngasih apa. akhirnya setelah aku pikir pikir, aku mau bikinin kamu virtual gift aja.",
+    "Maaf yaa kalo desain dari web ini kurang bagus, soalnya ini tu hasil explore explore sendiri dan belum terlalu mahir dalam bikinnya. maaf yaaa",
+    "Sebenernya aku sering boong tau waktu aku bilang aku ketiduran, sebenernya tu aku bikin ini, lanjut bikin ini. mungkin kamu udah tau si waktu kamu liat hp aku terus cek chattan aku sama ibu. tapi sekali lagi aku minta maaf yaa sayaang"
+];
+
+function initializeReadMe() {
+    // Reset and show all letter containers
+    for (let i = 1; i <= 3; i++) {
+        const letterElement = document.getElementById(`letter${i}`);
+        if (letterElement) {
+            letterElement.style.display = 'block';
+            letterElement.innerHTML = '';
+        }
+    }
+    
+    // Start typing sequence
+    typeLetterSequence(0);
+}
+
+function typeLetterSequence(letterIndex) {
+    if (letterIndex >= letters.length) return;
+    
+    const letterElement = document.getElementById(`letter${letterIndex + 1}`);
+    if (!letterElement) return;
+    
+    let charIndex = 0;
+    const text = letters[letterIndex];
+    
+    function typeChar() {
+        if (charIndex < text.length) {
+            letterElement.innerHTML += text.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeChar, 50);
+        } else {
+            setTimeout(() => typeLetterSequence(letterIndex + 1), 500);
+        }
+    }
+    
+    typeChar();
+}
+
+
+
+
+
+
+// I Have Something Page Functions
+// Pesan Valentine yang akan ditampilkan
+const valentineMessage = "Happy Valentine's Day sayaaangg!!! 💖 Hari ini bukan cuma tentang cokelat atau bunga, tapi tentang kita tentang betapa beruntungnya aku bisa punya kamu di hidupku. Kamu itu seperti cahaya di hariku yang paling gelap, seperti lagu favorit yang nggak pernah bosan aku dengar.\n\nTerima kasih udah selalu ada, selalu sabar, dan selalu bikin aku merasa dihargai. Aku sayang kamu, lebih dari kata-kata yang bisa menggambarkan. Semoga hari ini penuh dengan kebahagiaan, seperti kamu yang selalu kasih kebahagiaan buat aku.\n\nHappy Valentine's, my love! 💖✨";
+
+let typingTimeout = null;
+
+function initializeIHaveSomething() {
+    // Dapatkan elemen typing
+    const typingElement = document.getElementById('typing');
+    if (!typingElement) return;
+    
+    // Reset text dan tampilan
+    typingElement.innerHTML = '';
+    
+    // Clear any existing timeout
+    if (typingTimeout) {
+        clearTimeout(typingTimeout);
+    }
+    
+    // Pastikan letter container terlihat
+    const letterContainer = typingElement.closest('.letter');
+    if (letterContainer) {
+        letterContainer.style.display = 'block';
+    }
+    
+    let charIndex = 0;
+    
+    function typeChar() {
+        if (charIndex < valentineMessage.length) {
+            // Handle newlines
+            if (valentineMessage.charAt(charIndex) === '\n') {
+                typingElement.innerHTML += '<br><br>';
+            } else {
+                typingElement.innerHTML += valentineMessage.charAt(charIndex);
+            }
+            charIndex++;
+            typingTimeout = setTimeout(typeChar, 50);
+        }
+    }
+    
+    // Mulai animasi pengetikan
+    typeChar();
+}
+
+// Tambahkan ke fungsi navigateToPage yang sudah ada
+function navigateToPage(pageName) {
+    // Hide current page
+    document.querySelector(`[data-page="${currentPage}"]`).classList.remove('active');
+    
+    // Show new page
+    const newPage = document.querySelector(`[data-page="${pageName}"]`);
+    newPage.classList.add('active');
+    currentPage = pageName;
+    
+    // Initialize page content
+    if (pageName === 'i_have_something') {
+        // Tunggu sebentar sebelum memulai animasi
+        setTimeout(initializeIHaveSomething, 100);
+    } else if (pageName === 'read_me') {
+        initializeReadMe();
+    } else if (pageName === 'hitung_pacaran') {
+        updateCounter();
+    }
+}
+
+
+
+
+
+
+
+
+
+// Event listener saat dokumen dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    // Jika halaman dimulai di i_have_something, inisialisasi
+    if (currentPage === 'i_have_something') {
+        initializeIHaveSomething();
+    }
+});
+
+// Counter Functions
+function updateCounter() {
+    const startDate = new Date('2024-10-10T23:00:00');
+    const counterElement = document.getElementById('counter');
+    
+    if (!counterElement) return;
+    
+    function count() {
+        const now = new Date();
+        const diff = now - startDate;
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+        
+        counterElement.innerText = `${days} days - ${hours} hrs - ${minutes} min - ${seconds} sec`;
+    }
+    
+    count();
+    setInterval(count, 1000);
+}
+
+// Date Selection Functions
+function selectPlace(element, place) {
+    // Remove selection from all places
+    document.querySelectorAll('.place img').forEach(img => 
+        img.classList.remove('selected')
+    );
+    
+    // Add selection to clicked place
+    const img = element.querySelector('img');
+    if (img) img.classList.add('selected');
+    
+    selectedPlace = place;
+    updateResult();
+}
+
+function updateResult() {
+    const resultText = document.getElementById('resultText');
+    const day = document.getElementById('day')?.value;
+    
+    if (resultText && day && selectedPlace) {
+        resultText.textContent = `Di ${day} ini kita akan pergi ke ${selectedPlace} 💖`;
+    }
+}
+
+function sendToWhatsApp() {
+    if (!selectedPlace) {
+        alert('Pilih tempat dulu yaa! 💕');
+        return;
+    }
+    
+    const day = document.getElementById('day')?.value;
+    if (!day) return;
+    
+    const message = `Di ${day} ini kita akan pergi ke ${selectedPlace}! 💕`;
+    const phoneNumber = '6285725426737';
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappURL, '_blank');
+}
+
+// Initialize everything when the document is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeCountdown();
+    
+    // Add event listener for day selection
+    const daySelect = document.getElementById('day');
+    if (daySelect) {
+        daySelect.addEventListener('change', updateResult);
+    }
+    
+    // Set initial page
+    const initialPage = document.querySelector('[data-page].active');
+    if (initialPage) {
+        currentPage = initialPage.getAttribute('data-page');
+    }
+});
+    </script>
+</body>
+</html>
+
+
+
+
+
+<!-- /*jhbawdwbadwububawdbawdybawdwyubawdubuawdubawdiubawdiubawduibawdkontolllll* -->
+ <!-- asjdnjkijiijawdad -->
